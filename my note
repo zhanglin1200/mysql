@@ -1,0 +1,19 @@
+SELECT Statement: The GROUP BY Clause in SQL
+
+
+mysql升级后，查询语句报错：
+错误代码： 1055
+Expression #1 of SELECT list is not in GROUP BY clause and contains nonaggregated column '****' which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by
+经查原因如下：
+ONLY_FULL_GROUP_BY
+
+Reject queries for which the select list, HAVING condition, or ORDER BY list refer to nonaggregated columns that are neither named in the GROUP BY clause nor are functionally dependent on (uniquely determined by) GROUP BY columns.
+
+As of MySQL 5.7.5, the default SQL mode includes ONLY_FULL_GROUP_BY. (Before 5.7.5, MySQL does not detect functional dependency and ONLY_FULL_GROUP_BY is not enabled by default. For a description of pre-5.7.5 behavior, see the MySQL 5.6 Reference Manual.)
+
+A MySQL extension to standard SQL permits references in the HAVING clause to aliased expressions in the select list. Before MySQL 5.7.5, enablingONLY_FULL_GROUP_BY disables this extension, thus requiring the HAVING clause to be written using unaliased expressions. As of MySQL 5.7.5, this restriction is lifted so that the HAVING clause can refer to aliases regardless of whether ONLY_FULL_GROUP_BY is enabled.
+
+
+For additional discussion and examples, see Section 12.20.3, “MySQL Handling of GROUP BY”.
+
+另外附上一些group by 使用原则(http://www.informit.com/articles/article.aspx?p=664143&seqNum=6)：
